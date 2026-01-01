@@ -48,3 +48,67 @@ This project focuses on predicting hourly emergency call demand using multiple t
 - **LSTM** – Deep learning model for long-term dependencies  
 
 ### Workflow
+
+Data Collection
+↓
+Preprocessing
+↓
+Train-Test Split
+↓
+Model Training
+↓
+Forecasting
+↓
+Real-Time Simulation & Visualization
+
+
+---
+
+## 🛠️ Tech Stack
+
+- **Language:** Python  
+- **Libraries & Tools:**
+  - pandas, numpy
+  - statsmodels
+  - Prophet
+  - TensorFlow / Keras
+  - Streamlit
+
+---
+
+## 📈 Results & Discussion
+
+- **SARIMA** performed best for short-term forecasting
+- **LSTM** captured long-term trends effectively
+- **Prophet** handled seasonality and trend changes well
+- **ARIMA** struggled with strong seasonal patterns
+
+The system demonstrated improved forecasting accuracy, making it suitable for EMS planning.
+
+---
+
+## ✅ Conclusion
+
+This project proves that time-series forecasting can significantly enhance emergency response systems. Accurate predictions enable better ambulance allocation, reduced response times, and improved public safety.
+
+---
+
+## 🔮 Future Scope
+
+- Integration of weather and traffic data
+- Cloud deployment for real-time usage
+- Transformer-based forecasting models
+- Reinforcement learning for dynamic ambulance allocation
+- Anomaly detection for emergency surges
+
+
+
+## 📚 References
+
+- Jones, L., & Brown, T. (2019)  
+- Klem, R., & Ibrahim, S. (2020)  
+- Zhang, P., Liu, Y., & Chen, H. (2021)  
+- US EMS Analytics Report (2022)  
+- Chen, J., & Wang, H. (2023)  
+
+-
