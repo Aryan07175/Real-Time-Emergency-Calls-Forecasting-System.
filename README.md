@@ -1,114 +1,182 @@
-# 🚑 Real-Time Emergency Calls Forecasting System
+# 🚨 Real-Time Emergency Calls Forecasting System
 
-A time-series based emergency call forecasting system designed to predict ambulance demand using historical 911 call data. This project leverages statistical and deep learning models to improve Emergency Medical Services (EMS) planning and response efficiency.
+A comprehensive time series analysis system for predicting ambulance demand using ARIMA and Prophet models.
+
+## 📋 Project Overview
+
+This system forecasts emergency 911 calls 1-24 hours ahead to help optimize ambulance resource allocation. It includes:
+
+- **Data Preprocessing**: Loads and processes emergency call data
+- **Model Training**: ARIMA and Prophet forecasting models
+- **Real-Time Simulation**: Simulates streaming data and rolling predictions
+- **Interactive Dashboard**: Streamlit-based visualization and analysis
+
+## 🗂️ Project Structure
+
+```
+project/
+├── data/                    # Data directory (place your CSV here)
+├── data_preprocessing.py    # Data loading and preprocessing
+├── model_training.py        # ARIMA and Prophet model training
+├── real_time_simulation.py  # Real-time simulation pipeline
+├── dashboard/
+│   └── app.py              # Streamlit dashboard
+├── utils/
+│   └── helpers.py          # Utility functions
+├── requirements.txt        # Python dependencies
+└── README.md              # This file
+```
+
+## 📊 Dataset Format
+
+The system expects a CSV file with the following columns:
+
+- `timeStamp`: Timestamp of the emergency call (datetime format)
+- `title`: Call type (e.g., "EMS: BACK PAINS/INJURY", "Fire: GAS-ODOR/LEAK", "Traffic: VEHICLE ACCIDENT")
+- `lat`, `lng`: Geographic coordinates
+- `twp`: Township/location
+- `addr`: Address
+
+**Note**: The system will automatically extract call types and create priority levels.
+
+## 🚀 Installation
+
+1. **Clone or download this repository**
+
+2. **Install dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Place your dataset**:
+   - Place your CSV file in the project root directory
+   - Name it `911.csv` (or update the file path in the code)
+
+## 📖 Usage
+
+### 1. Data Preprocessing
+
+```python
+from data_preprocessing import process_dataset
+
+# Load and preprocess data
+hourly_df, processed_df, location_df = process_dataset('911.csv')
+```
+
+### 2. Model Training
+
+```python
+from model_training import train_arima, train_prophet, forecast_arima, forecast_prophet
+
+# Train ARIMA model
+arima_model = train_arima(hourly_df, auto_tune=False, order=(2, 1, 2))
+
+# Generate forecast
+arima_forecast = forecast_arima(arima_model, steps=24)
+
+# Train Prophet model
+prophet_model = train_prophet(hourly_df)
+
+# Generate forecast
+prophet_forecast = forecast_prophet(prophet_model, periods=24)
+```
+
+### 3. Real-Time Simulation
+
+```python
+from real_time_simulation import simulate_real_time
+
+# Run simulation
+simulator, predictions = simulate_real_time(
+    historical_df=hourly_df,
+    num_hours=48,
+    retrain_interval=24
+)
+```
+
+### 4. Launch Dashboard
+
+```bash
+streamlit run dashboard/app.py
+```
+
+The dashboard will open in your browser at `http://localhost:8501`
+
+## 🎯 Dashboard Features
+
+The Streamlit dashboard includes:
+
+1. **📊 Hourly Trends**: Interactive time series visualization
+2. **🧭 Seasonal Patterns**: Hour-of-day and day-of-week patterns
+3. **🔮 Forecasts**: 24-hour ahead predictions with confidence intervals
+4. **📍 Location Map**: Geographic visualization of emergency calls
+5. **🔁 Real-Time Simulation**: Simulate streaming data and rolling predictions
+
+## 🔧 Configuration
+
+### Model Parameters
+
+- **ARIMA**: Default order (2, 1, 2). Set `auto_tune=True` for automatic parameter selection (slower).
+- **Prophet**: Configured with yearly, weekly, and daily seasonality.
+
+### Real-Time Simulation
+
+- **Retrain Interval**: How often to retrain models (default: 24 hours)
+- **Simulation Hours**: Number of hours to simulate (default: 48)
+
+## 📈 Model Performance
+
+The system provides evaluation metrics:
+
+- **MAE**: Mean Absolute Error
+- **MSE**: Mean Squared Error
+- **RMSE**: Root Mean Squared Error
+- **MAPE**: Mean Absolute Percentage Error
+
+## 🛠️ Troubleshooting
+
+### Common Issues
+
+1. **Import Errors**: Make sure all dependencies are installed:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+2. **Memory Issues**: For large datasets, consider:
+   - Using a subset of data for training
+   - Reducing the number of simulation hours
+   - Sampling location data for map visualization
+
+3. **Prophet Installation**: If Prophet fails to install:
+   ```bash
+   pip install prophet
+   ```
+   On Windows, you may need to install Visual C++ Build Tools.
+
+## 📝 Notes
+
+- The system automatically handles missing values and resamples data to hourly intervals
+- Models are trained on 80% of the data by default
+- Real-time simulation generates synthetic data based on historical patterns
+- The dashboard supports interactive exploration of forecasts and patterns
+
+## 🤝 Contributing
+
+Feel free to extend this system with:
+- Additional forecasting models (LSTM, XGBoost, etc.)
+- More sophisticated feature engineering
+- Real-time data integration APIs
+- Advanced visualization options
+
+## 📄 License
+
+This project is open source and available for educational and research purposes.
+
+## 👤 Author
+
+Built for Time Series Analysis Project
 
 ---
 
-## 📌 Project Overview
+**Happy Forecasting! 🚨📊**
 
-Emergency Medical Services (EMS) face increasing pressure due to rising emergency calls and limited resources. Accurate forecasting of emergency call volume can help in better ambulance allocation and faster response times.
-
-This project focuses on predicting hourly emergency call demand using multiple time-series forecasting models and comparing their performance.
-
----
-
-## 🎯 Objectives
-
-- Forecast hourly emergency emergency call volumes
-- Compare traditional and deep learning time-series models
-- Simulate real-time emergency demand prediction
-- Assist EMS authorities in efficient ambulance deployment
-
----
-
-## 📊 Dataset
-
-- **Source:** 911 Emergency Call Dataset  
-- **Date Range:** 2015 – 2020  
-- **Total Calls:** 663,522  
-- **Total Hours:** 40,634  
-- **Average Calls per Hour:** 16.33  
-
-### Data Preprocessing
-- Timestamp conversion
-- Hourly resampling
-- Missing value handling
-- Outlier removal
-- Feature engineering
-- Normalization (for LSTM)
-
----
-
-## 🧠 Methodology
-
-### Models Implemented
-- **ARIMA** – Baseline forecasting model  
-- **SARIMA** – Seasonal time-series forecasting  
-- **Facebook Prophet** – Trend and seasonality-aware model  
-- **LSTM** – Deep learning model for long-term dependencies  
-
-### Workflow
-
-Data Collection
-↓
-Preprocessing
-↓
-Train-Test Split
-↓
-Model Training
-↓
-Forecasting
-↓
-Real-Time Simulation & Visualization
-
-
----
-
-## 🛠️ Tech Stack
-
-- **Language:** Python  
-- **Libraries & Tools:**
-  - pandas, numpy
-  - statsmodels
-  - Prophet
-  - TensorFlow / Keras
-  - Streamlit
-
----
-
-## 📈 Results & Discussion
-
-- **SARIMA** performed best for short-term forecasting
-- **LSTM** captured long-term trends effectively
-- **Prophet** handled seasonality and trend changes well
-- **ARIMA** struggled with strong seasonal patterns
-
-The system demonstrated improved forecasting accuracy, making it suitable for EMS planning.
-
----
-
-## ✅ Conclusion
-
-This project proves that time-series forecasting can significantly enhance emergency response systems. Accurate predictions enable better ambulance allocation, reduced response times, and improved public safety.
-
----
-
-## 🔮 Future Scope
-
-- Integration of weather and traffic data
-- Cloud deployment for real-time usage
-- Transformer-based forecasting models
-- Reinforcement learning for dynamic ambulance allocation
-- Anomaly detection for emergency surges
-
-
-
-## 📚 References
-
-- Jones, L., & Brown, T. (2019)  
-- Klem, R., & Ibrahim, S. (2020)  
-- Zhang, P., Liu, Y., & Chen, H. (2021)  
-- US EMS Analytics Report (2022)  
-- Chen, J., & Wang, H. (2023)  
-
--
