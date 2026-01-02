@@ -1,0 +1,45 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Streamlit Dashboard",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/dashboard/app.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "run",
+                "${workspaceFolder}/dashboard/app.py",
+                "--server.port",
+                "8501"
+            ],
+            "module": "streamlit"
+        },
+        {
+            "name": "Python: Train Models",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/train_models.py",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Python: Data Preprocessing",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/data_preprocessing.py",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        }
+    ]
+}
+
